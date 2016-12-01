@@ -24,16 +24,16 @@ describe GildedRose do
   end
 
   context 'updating the quality'do
+    before(:each) do
+        @gilded_rose.update_quality
+    end
     it 'it deducts one quality each day for a regular item'do
-      @gilded_rose.update_quality
       change{@item_1.quality}.from(20).to(19)
     end
     it 'won\'t deduct quality of a regular item if quality is below 0' do
-      @gilded_rose.update_quality
       expect(@item_9.quality).to eq(0)
     end
     it 'won\'t increase the quality of an aged brie if it is already at 50' do
-      @gilded_rose.update_quality
       expect(@item_10.quality).to eq(50)
     end
   end
