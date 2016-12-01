@@ -28,7 +28,15 @@ def deduct_day(item)
   item.sell_in -= 1
 end
 
-def update_regular_items_quality
+def deduct_quality(item, amount_to_deduct)
+  item.quality -= amount_to_deduct
+end
+
+def add_quality(item, amount_to_add)
+  item.quality += amount_to_add
+end
+
+def update_regular_items
   @regular_items.each do |item|
     deduct_day(item)
     deduct_quality(item, 1) if item.quality > 0 && item.sell_in > 0
@@ -36,20 +44,23 @@ def update_regular_items_quality
   end
 end
 
-def update_aged_quality
+def update_aged_items
   @aged_items.each do |item|
-
+    deduct_day(item)
+    add_quality(item, 1) if item.quality < 50 && item.sell_in > 0
+    add_quality(item, 2) if item.quality < 50 && item.sell_in <= 0
   end
 end
 
-def deduct_day(item)
-  item.sell_in = item.sell_in - 1
+def update_backstage_passes
+  @backstage_items.each do |item|
+    deduct_day(item)
+    add_quality(item, 1) if item.quality < 50 && item.sell_in >= 11
+    add_quality(item, 2) if item.quality < 50 && item.sell_in < 11
+    add_quality(item, 3) if item.quality < 50 && item.sell_in < 6
+    deduct_quality(item, item.quality) if item.quality <= 50 && item.sell_in < 0
+  end
 end
-
-def deduct_quality(item, amount_to_deduct)
-  item.quality = item.quality - amount_to_deduct
-end
-
 
   def update_quality()
     @items.each do |item|

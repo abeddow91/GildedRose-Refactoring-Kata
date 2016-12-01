@@ -30,52 +30,52 @@ describe GildedRose do
 
     context 'Regular items'do
       it 'the quality decreases by one each day'do
-        expect{@gilded_rose.update_regular_items_quality}.to change{@item_1.quality}.by(-1)
+        expect{@gilded_rose.update_regular_items}.to change{@item_1.quality}.by(-1)
       end
       it 'won\'t deduct one from quality rating if rating is below 0' do
-        expect{@gilded_rose.update_regular_items_quality}.not_to change{@item_9.quality}
+        expect{@gilded_rose.update_regular_items}.not_to change{@item_9.quality}
       end
       it 'deducts 1 day from sell_in count' do
-        expect{@gilded_rose.update_regular_items_quality}.to change{@item_1.sell_in}.by(-1)
+        expect{@gilded_rose.update_regular_items}.to change{@item_1.sell_in}.by(-1)
       end
       it 'quality decreases by 2 each day if sell_in is 0' do
-        10.times{@gilded_rose.update_regular_items_quality}
-        expect{@gilded_rose.update_regular_items_quality}.to change{@item_1.quality}.by(-2)
+        10.times{@gilded_rose.update_regular_items}
+        expect{@gilded_rose.update_regular_items}.to change{@item_1.quality}.by(-2)
       end
     end
     context 'Aged Brie' do
       it 'the quality increases by one each day' do
-        expect{@gilded_rose.update_quality}.to change{@item_2.quality}.by(1)
+        expect{@gilded_rose.update_aged_items}.to change{@item_2.quality}.by(1)
       end
       it 'the quality cannot exceed 50' do
-        expect{@gilded_rose.update_quality}.not_to change{@item_10.quality}
+        expect{@gilded_rose.update_aged_items}.not_to change{@item_10.quality}
       end
       it 'deducts 1 day from sell_in count' do
-        expect{@gilded_rose.update_quality}.to change{@item_2.sell_in}.by(-1)
+        expect{@gilded_rose.update_aged_items}.to change{@item_2.sell_in}.by(-1)
       end
       it 'the quality increases by 2 each day after sell_in reaches zero' do
-        2.times{@gilded_rose.update_quality}
-        expect{@gilded_rose.update_quality}.to change{@item_2.quality}.by(2)
+        2.times{@gilded_rose.update_aged_items}
+        expect{@gilded_rose.update_aged_items}.to change{@item_2.quality}.by(2)
       end
     end
     context 'Backstage Passes' do
       it 'the quality increases by one each day until it has 11 days shelf life' do
-        expect{@gilded_rose.update_quality}.to change{@item_5.quality}.by(1)
+        expect{@gilded_rose.update_backstage_passes}.to change{@item_5.quality}.by(1)
       end
       it 'the quality increases by two each day once sell_in is less than 11' do
-        expect{@gilded_rose.update_quality}.to change{@item_11.quality}.by(2)
+        expect{@gilded_rose.update_backstage_passes}.to change{@item_11.quality}.by(2)
       end
       it 'the quality increases by three each day once sell_in is less than 6' do
-        expect{@gilded_rose.update_quality}.to change{@item_12.quality}.by(3)
+        expect{@gilded_rose.update_backstage_passes}.to change{@item_12.quality}.by(3)
       end
       it 'the quality cannot exceed 50' do
-        expect{@gilded_rose.update_quality}.to change{@item_6.quality}.by(1)
+        expect{@gilded_rose.update_backstage_passes}.to change{@item_6.quality}.by(1)
       end
       it 'deducts 1 day from sell_in count' do
-        expect{@gilded_rose.update_quality}.to change{@item_5.sell_in}.by(-1)
+        expect{@gilded_rose.update_backstage_passes}.to change{@item_5.sell_in}.by(-1)
       end
       it 'quality drops to 0 once sell in is 0' do
-        6.times{@gilded_rose.update_quality}
+        6.times{@gilded_rose.update_backstage_passes}
         expect(@item_12.quality).to eq(0)
       end
     end
