@@ -58,14 +58,18 @@ end
                 item.quality = item.quality + 1
               end
             end
+            #if backstage passes have less than 6 days  to be sold
             if item.sell_in < 6
+              #and the quality is less than 50
               if item.quality < 50
+                #then add another 1 to quality
                 item.quality = item.quality + 1
               end
             end
           end
         end
       end
+      #if the item is not legendary, deduct 1 from sell_in days
       if item.name != "Sulfuras, Hand of Ragnaros"
         item.sell_in = item.sell_in - 1
       end
