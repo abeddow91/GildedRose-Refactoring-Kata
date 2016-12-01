@@ -7,6 +7,7 @@ attr_reader :items
     @items = items
     @regular_items = []
     @backstage_items = []
+    @aged_items = []
     @legendary_items = []
     @conjured_items = []
 
@@ -15,7 +16,8 @@ attr_reader :items
 def organize_items_by_status(items)
   @items.each do |item|
     @legendary_items.push(item) if item.name == "Sulfuras, Hand of Ragnaros"
-    @backstage_items.push(item) if item.name == "Backstage passes to a TAFKAL80ETC concert" || item.name == "Aged Brie"
+    @backstage_items.push(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
+    @aged_items.push(item) if item.name == "Aged Brie"
     @conjured_items.push(item) if item.name == "Conjured Mana Cake"
     @regular_items.push(item)
   end
