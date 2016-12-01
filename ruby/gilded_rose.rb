@@ -1,23 +1,58 @@
+require_relative 'item'
 class GildedRose
+
+attr_reader :items
 
   def initialize(items)
     @items = items
+    @regular_items = []
+    @backstage_items = []
+    @legendary_items = []
+    @conjured_items = []
+
   end
+
+def organize_items_by_status(items)
+  @items.each do |item|
+    @legendary_items.push(item) if item.name == "Sulfuras, Hand of Ragnaros"
+    @backstage_items.push(item) if item.name == "Backstage passes to a TAFKAL80ETC concert" || item.name == "Aged Brie"
+    @conjured_items.push(item) if item.name == "Conjured Mana Cake"
+    @regular_items.push(item)
+  end
+end
+
+
+def update_regular_items_quality
+  @regular_items.each do |item|
+
+  end
+end
+
 
   def update_quality()
     @items.each do |item|
+      #if it's not a backstage item
       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
+          #and the quality is above 0
         if item.quality > 0
+            #and it's not a legendary item
           if item.name != "Sulfuras, Hand of Ragnaros"
+            #then deduct 1 from the quality
             item.quality = item.quality - 1
           end
         end
       else
+        #if item quality is less 50
         if item.quality < 50
+          #then add 1 to the quality each day
           item.quality = item.quality + 1
+            #and if the item is a backstage item
           if item.name == "Backstage passes to a TAFKAL80ETC concert"
+            #and the item has less than 11 day to be sold
             if item.sell_in < 11
+              #and the quality is less than 50
               if item.quality < 50
+                #then add another 1 to quality
                 item.quality = item.quality + 1
               end
             end
@@ -50,19 +85,5 @@ class GildedRose
         end
       end
     end
-  end
-end
-
-class Item
-  attr_accessor :name, :sell_in, :quality
-
-  def initialize(name, sell_in, quality)
-    @name = name
-    @sell_in = sell_in
-    @quality = quality
-  end
-
-  def to_s()
-    "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
