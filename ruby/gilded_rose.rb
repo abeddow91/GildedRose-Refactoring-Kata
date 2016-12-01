@@ -69,15 +69,22 @@ end
           end
         end
       end
-      #if the item is not legendary, deduct 1 from sell_in days
+      #if the item is not legendary
       if item.name != "Sulfuras, Hand of Ragnaros"
+        #deduct 1 from sell_in days
         item.sell_in = item.sell_in - 1
       end
+      #if the item has less than 0 days to sell in
       if item.sell_in < 0
+        #and is not aged brie
         if item.name != "Aged Brie"
+          #and is not backstage pass
           if item.name != "Backstage passes to a TAFKAL80ETC concert"
+            #and the quality is greater than 0
             if item.quality > 0
+              #and it's not legendary
               if item.name != "Sulfuras, Hand of Ragnaros"
+                #the deduct quality by another 1
                 item.quality = item.quality - 1
               end
             end

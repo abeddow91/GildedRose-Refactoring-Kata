@@ -39,6 +39,10 @@ describe GildedRose do
       it 'deducts 1 day from sell_in count' do
         expect{@gilded_rose.update_quality}.to change{@item_1.sell_in}.by(-1)
       end
+      it 'quality decreases by 2 each day if sell_in is 0' do
+        10.times{@gilded_rose.update_quality}
+        expect{@gilded_rose.update_quality}.to change{@item_1.quality}.by(-2)
+      end
     end
     context 'Aged Brie' do
       it 'the quality increases by one each day' do
