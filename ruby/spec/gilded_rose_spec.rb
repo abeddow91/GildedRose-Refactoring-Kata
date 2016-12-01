@@ -17,6 +17,7 @@ describe GildedRose do
     @item_12 = Item.new('Backstage passes to a TAFKAL80ETC concert', 5, 30)
     @item_array = [@item_1, @item_2, @item_3, @item_4, @item_5, @item_6, @item_7, @item_8, @item_9, @item_10, @item_11, @item_12]
     @gilded_rose = GildedRose.new(@item_array)
+    @gilded_rose.organize_items_by_status(@item_array)
   end
 
   context 'initilizing the class' do
@@ -26,22 +27,20 @@ describe GildedRose do
   end
 
   context 'updating the quality of items'do
-    # before(:each) do
-    #     @gilded_rose.update_quality
-    # end
+
     context 'Regular items'do
       it 'the quality decreases by one each day'do
-        expect{@gilded_rose.update_quality}.to change{@item_1.quality}.by(-1)
+        expect{@gilded_rose.update_regular_items_quality}.to change{@item_1.quality}.by(-1)
       end
       it 'won\'t deduct one from quality rating if rating is below 0' do
-        expect{@gilded_rose.update_quality}.not_to change{@item_9.quality}
+        expect{@gilded_rose.update_regular_items_quality}.not_to change{@item_9.quality}
       end
       it 'deducts 1 day from sell_in count' do
-        expect{@gilded_rose.update_quality}.to change{@item_1.sell_in}.by(-1)
+        expect{@gilded_rose.update_regular_items_quality}.to change{@item_1.sell_in}.by(-1)
       end
       it 'quality decreases by 2 each day if sell_in is 0' do
-        10.times{@gilded_rose.update_quality}
-        expect{@gilded_rose.update_quality}.to change{@item_1.quality}.by(-2)
+        10.times{@gilded_rose.update_regular_items_quality}
+        expect{@gilded_rose.update_regular_items_quality}.to change{@item_1.quality}.by(-2)
       end
     end
     context 'Aged Brie' do
@@ -53,6 +52,10 @@ describe GildedRose do
       end
       it 'deducts 1 day from sell_in count' do
         expect{@gilded_rose.update_quality}.to change{@item_2.sell_in}.by(-1)
+      end
+      it 'the quality increases by 2 each day after sell_in reaches zero' do
+        2.times{@gilded_rose.update_quality}
+        expect{@gilded_rose.update_quality}.to change{@item_2.quality}.by(2)
       end
     end
     context 'Backstage Passes' do
@@ -70,6 +73,10 @@ describe GildedRose do
       end
       it 'deducts 1 day from sell_in count' do
         expect{@gilded_rose.update_quality}.to change{@item_5.sell_in}.by(-1)
+      end
+      it 'quality drops to 0 once sell in is 0' do
+        6.times{@gilded_rose.update_quality}
+        expect(@item_12.quality).to eq(0)
       end
     end
   end

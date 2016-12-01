@@ -19,15 +19,35 @@ def organize_items_by_status(items)
     @backstage_items.push(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
     @aged_items.push(item) if item.name == "Aged Brie"
     @conjured_items.push(item) if item.name == "Conjured Mana Cake"
-    @regular_items.push(item)
+    @regular_items.push(item) if item.name == '+5 Dexterity Vest'
   end
 end
 
 
+def deduct_day(item)
+  item.sell_in -= 1
+end
+
 def update_regular_items_quality
   @regular_items.each do |item|
+    deduct_day(item)
+    deduct_quality(item, 1) if item.quality > 0 && item.sell_in > 0
+    deduct_quality(item, 2) if item.quality > 0 && item.sell_in <= 0
+  end
+end
+
+def update_aged_quality
+  @aged_items.each do |item|
 
   end
+end
+
+def deduct_day(item)
+  item.sell_in = item.sell_in - 1
+end
+
+def deduct_quality(item, amount_to_deduct)
+  item.quality = item.quality - amount_to_deduct
 end
 
 
@@ -89,6 +109,7 @@ end
               end
             end
           else
+            #if Backstage hits zero runs out of days zero drop quality to zero
             item.quality = item.quality - item.quality
           end
         else
