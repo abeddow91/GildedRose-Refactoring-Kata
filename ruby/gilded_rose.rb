@@ -24,8 +24,8 @@ def organize_items_by_status(items)
 end
 
 
-def deduct_day(item)
-  item.sell_in -= 1
+def deduct_day(item, number_of_days)
+  item.sell_in -= number_of_days
 end
 
 def deduct_quality(item, amount_to_deduct)
@@ -38,26 +38,26 @@ end
 
 def update_regular_items
   @regular_items.each do |item|
-    deduct_day(item)
+    deduct_day(item, 1)
     deduct_quality(item, 1) if item.quality > 0 && item.sell_in > 0
-    deduct_quality(item, 2) if item.quality > 0 && item.sell_in <= 0
+    deduct_quality(item, 2) if (item.quality-2) >= 0 && item.sell_in <= 0
   end
 end
 
 def update_aged_items
   @aged_items.each do |item|
-    deduct_day(item)
-    add_quality(item, 1) if item.quality < 50 && item.sell_in > 0
-    add_quality(item, 2) if item.quality < 50 && item.sell_in <= 0
+    deduct_day(item, 1)
+    add_quality(item, 1) if item.quality < 50
+    add_quality(item, 1) if (item.quality+1) <= 50 && item.sell_in <= 0
   end
 end
 
 def update_backstage_passes
   @backstage_items.each do |item|
-    deduct_day(item)
-    add_quality(item, 1) if item.quality < 50 && item.sell_in >= 11
-    add_quality(item, 2) if item.quality < 50 && item.sell_in < 11
-    add_quality(item, 3) if item.quality < 50 && item.sell_in < 6
+    deduct_day(item, 1)
+    add_quality(item, 1) if item.quality < 50
+    add_quality(item, 1) if (item.quality+1) <= 50 && item.sell_in.between?(6, 10)
+    add_quality(item, 2) if (item.quality+2) <= 50 && item.sell_in.between?(1, 5)
     deduct_quality(item, item.quality) if item.quality <= 50 && item.sell_in < 0
   end
 end
